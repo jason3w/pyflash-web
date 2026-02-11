@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Configuration
+CHIP="PY32F002Bx5"
+PACK="Puya.PY32F0xx_DFP.1.2.8.pack"
+HEX="Project.hex"
+
+echo "---------------------------------------"
+echo "🚀 PROBE-RS PRODUCTION MODE"
+echo "Target: $CHIP"
+echo "---------------------------------------"
+
+while true; do
+    echo "READY: Connect a board..."
+
+    # 1. Wait until a DAPLink is actually plugged in
+    while ! probe-rs list | grep -q "CMSIS-DAP"; do
+        sleep 0.2
+    done
+
+    echo "Chip detected! Flashing..."
+
+    # 2. Execute the high-speed flash
+    # --speed 10000 sets the clock to 10MHz for maximum throughput
+    if probe-rs download --chip $CHIP --chip-description $PACK --speed 10000 $HEX; then
+        echo "✅ SUCCESS: Flash Complete."
+        # Optional: Play a sound so you don't have to look at the screen
+        afplay /System/Library/Sounds/Glass.aiff
+        
+        echo "Please UNPLUG the board."
+        
+        # 3. Wait until the board is removed before looping 
+        # (prevents accidental double-flashing)
+        while probe-rs list | grep -q "CMSIS-DAP"; do
+            sleep 0.2
+        done
+        echo "---------------------------------------"
+    else
+        echo "❌ ERROR: Flash failed. Check wiring and try again."
+        afplay /System/Library/Sounds/Basso.aiff
+        sleep 1
+    fi
+done

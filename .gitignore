@@ -1,0 +1,6 @@
+dist/
+build/
+*.dmg
+*.pack
+*.aiff
+__pycache__/
