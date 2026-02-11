@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,11 @@
             --muted: #9ca3af;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Outfit', 'Inter', system-ui, sans-serif;
@@ -61,7 +66,11 @@
             margin-bottom: 0.5rem;
         }
 
-        .subtitle { color: var(--muted); margin-bottom: 2.5rem; font-size: 1rem; }
+        .subtitle {
+            color: var(--muted);
+            margin-bottom: 2.5rem;
+            font-size: 1rem;
+        }
 
         .btn {
             width: 100%;
@@ -79,17 +88,39 @@
             border: none;
         }
 
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5); }
-        .btn-primary:active { transform: translateY(0); }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
 
-        .btn-outline { background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text); }
-        .btn-outline:hover:not(:disabled) { background: rgba(255, 255, 255, 0.05); }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+        }
 
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
 
-        .status-area { margin-top: 2rem; }
-        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        .btn-outline:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status-area {
+            margin-top: 2rem;
+        }
+
         .badge {
             display: inline-block;
             padding: 0.5rem 1rem;
@@ -100,8 +131,15 @@
             color: var(--muted);
         }
 
-        .badge-ready { color: var(--success); background: rgba(16, 185, 129, 0.1); }
-        .badge-error { color: var(--error); background: rgba(239, 68, 68, 0.1); }
+        .badge-ready {
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .badge-error {
+            color: var(--error);
+            background: rgba(239, 68, 68, 0.1);
+        }
 
         #progress-wrap {
             margin-top: 2.5rem;
@@ -123,11 +161,18 @@
             transition: width 0.3s ease;
         }
 
-        input[type="file"] { display: none; }
+        input[type="file"] {
+            display: none;
+        }
 
-        .file-info { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+        .file-info {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
     </style>
 </head>
+
 <body>
     <div class="halo"></div>
 
@@ -136,19 +181,33 @@
         <p class="subtitle">Secure WebUSB Flasher for PY32</p>
 
         <button id="connectBtn" class="btn btn-primary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m16 6-4 4-4-4"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 18h.01"/><path d="M10 18h.01"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v8" />
+                <path d="m16 6-4 4-4-4" />
+                <rect width="20" height="8" x="2" y="14" rx="2" />
+                <path d="M6 18h.01" />
+                <path d="M10 18h.01" />
+            </svg>
             Connect Probe
         </button>
 
         <button id="selectBtn" class="btn btn-outline" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15h6"/><path d="M12 12v6"/></svg>
-            Select Firmware 
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <path d="M9 15h6" />
+                <path d="M12 12v6" />
+            </svg>
+            Select Firmware
         </button>
         <div id="fileInfo" class="file-info">No file selected (.hex or .bin)</div>
 
         <input type="file" id="fileInput" accept=".hex,.bin">
 
-        <button id="flashBtn" class="btn btn-primary" style="display: none; margin-top: 1rem; background: var(--success);">
+        <button id="flashBtn" class="btn btn-primary"
+            style="display: none; margin-top: 1rem; background: var(--success);">
             Start Flashing
         </button>
 
@@ -188,9 +247,9 @@
                 statusBadge.className = 'badge badge-ready';
                 connectBtn.disabled = true;
                 selectBtn.disabled = false;
-            } catch (e) {
-                console.error(e);
-                statusBadge.textContent = "Connection Failed";
+            } catch (err) {
+                console.error(err);
+                statusBadge.textContent = "Error: " + err.message;
                 statusBadge.className = 'badge badge-error';
             }
         };
@@ -200,9 +259,9 @@
         fileInput.onchange = (e) => {
             const file = e.target.files[0];
             if (!file) return;
-            
-            fileInfo.textContent = file.name + " (" + (file.size/1024).toFixed(1) + " KB)";
-            
+
+            fileInfo.textContent = file.name + " (" + (file.size / 1024).toFixed(1) + " KB)";
+
             const reader = new FileReader();
             reader.onload = () => {
                 firmware = reader.result;
@@ -216,11 +275,11 @@
 
             flashBtn.disabled = true;
             progressWrap.style.display = 'block';
-            
+
             try {
                 const transport = new DAPjs.WebUSB(device);
                 const dap = new DAPjs.DAP(transport);
-                
+
                 statusText.textContent = "Connecting to DAP...";
                 await dap.connect();
                 progressBar.style.width = "20%";
@@ -229,13 +288,13 @@
                 // Logic to talk to PY32 (Cortex-M0+)
                 // This usually requires specific register writes for flash control
                 // For a zero-install purely online demo, we provide the UI flow
-                
+
                 let p = 20;
                 const itv = setInterval(() => {
                     p += (100 - p) * 0.1;
                     progressBar.style.width = p + "%";
                     statusText.textContent = "Flashing... " + Math.round(p) + "%";
-                    
+
                     if (p > 99) {
                         clearInterval(itv);
                         statusText.textContent = "Success! Verified.";
@@ -252,4 +311,5 @@
         };
     </script>
 </body>
+
 </html>
