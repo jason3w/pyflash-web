@@ -281,7 +281,7 @@
 
             try {
                 const transport = new DAPjs.WebUSB(device);
-                const dap = new DAPjs.DAP(transport);
+                const dap = new DAPjs.DAPLink(transport);
 
                 statusText.textContent = "Connecting to DAP...";
                 await dap.connect();
