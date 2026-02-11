@@ -240,7 +240,10 @@
         connectBtn.onclick = async () => {
             try {
                 device = await navigator.usb.requestDevice({
-                    filters: [{ classCode: 0xFF, protocolCode: 0x00 }] // CMSIS-DAP generic
+                    filters: [
+                        { vendorId: 0x0D28 }, // DAPLink
+                        { classCode: 0xFF, protocolCode: 0x00 } // CMSIS-DAP
+                    ]
                 });
 
                 statusBadge.textContent = "Connected: " + device.productName;
