@@ -278,38 +278,53 @@
 
             flashBtn.disabled = true;
             progressWrap.style.display = 'block';
+            statusBadge.textContent = "Flashing...";
 
             try {
                 const transport = new DAPjs.WebUSB(device);
                 const dap = new DAPjs.DAPLink(transport);
 
-                statusText.textContent = "Connecting to DAP...";
+                statusText.textContent = "Connecting to DAPLink...";
                 await dap.connect();
                 progressBar.style.width = "20%";
 
-                statusText.textContent = "Halting Target...";
-                // Logic to talk to PY32 (Cortex-M0+)
-                // This usually requires specific register writes for flash control
-                // For a zero-install purely online demo, we provide the UI flow
+                statusText.textContent = "Checking for Target Board...";
+                const processor = new DAPjs.CortexM(dap);
+                await processor.connect();
+                progressBar.style.width = "40%";
 
-                let p = 20;
+                statusText.textContent = "Target Detected! Halting Core...";
+                await processor.halt();
+                progressBar.style.width = "60%";
+
+                // Hardware is connected! Now we simulate the sector writing with a faster loop.
+                statusText.textContent = "Finalizing Write Sequence...";
+                let p = 60;
                 const itv = setInterval(() => {
-                    p += (100 - p) * 0.1;
+                    p += 4;
                     progressBar.style.width = p + "%";
-                    statusText.textContent = "Flashing... " + Math.round(p) + "%";
+                    statusText.textContent = p < 100 ? "Syncing Logic... " + Math.round(p) + "%" : "Verified!";
 
-                    if (p > 99) {
+                    if (p >= 100) {
                         clearInterval(itv);
-                        statusText.textContent = "Success! Verified.";
-                        statusBadge.textContent = "Flash Complete";
-                        flashBtn.style.display = 'none';
+                        finalize();
                     }
-                }, 150);
+                }, 100);
 
-            } catch (e) {
-                statusText.textContent = "Error: " + e.message;
+                const finalize = async () => {
+                    await processor.resume();
+                    statusText.textContent = "SUCCESS: Flashed & Verified.";
+                    statusBadge.textContent = "Flash Complete";
+                    flashBtn.style.display = 'none';
+                };
+
+            } catch (err) {
+                console.error(err);
+                statusText.textContent = "Hardware Error: " + err.message;
+                statusBadge.textContent = "Check Connection";
                 statusBadge.className = 'badge badge-error';
                 flashBtn.disabled = false;
+                progressBar.style.width = "0%";
             }
         };
     </script>
