@@ -242,7 +242,7 @@
                 device = await navigator.usb.requestDevice({
                     filters: [
                         { vendorId: 0x0D28 }, // DAPLink
-                        { classCode: 0xFF, protocolCode: 0x00 } // CMSIS-DAP
+                        { classCode: 0xFF, subclassCode: 0x00, protocolCode: 0x00 } // CMSIS-DAP
                     ]
                 });
 
