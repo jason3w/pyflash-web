@@ -313,9 +313,18 @@
 
                 const finalize = async () => {
                     await processor.resume();
-                    statusText.textContent = "SUCCESS: Flashed & Verified.";
-                    statusBadge.textContent = "Flash Complete";
+                    statusText.textContent = "CONNECTED: Hardware Detected (Connectivity Test OK).";
+                    statusBadge.textContent = "Test Complete";
                     flashBtn.style.display = 'none';
+
+                    // Add a persistent note
+                    const note = document.createElement('div');
+                    note.style.marginTop = '20px';
+                    note.style.color = '#eab308';
+                    note.style.fontSize = '0.85rem';
+                    note.style.lineHeight = '1.4';
+                    note.innerHTML = `⚠️ <b>Note:</b> Writing firmware via WebUSB is in Alpha. <br> For production flashing, please use the <b>PyFlash Desktop App</b>.`;
+                    document.querySelector('.container').appendChild(note);
                 };
 
             } catch (err) {
